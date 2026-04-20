@@ -17,6 +17,7 @@
  */
 
 #include QMK_KEYBOARD_H
+#include "keymap_french.h"
 
 enum dilemma_keymap_layers {
     LAYER_BASE = 0,
@@ -50,10 +51,10 @@ enum dilemma_keymap_layers {
 /** \brief QWERTY layout (3 rows, 10 columns). */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT_split_3x5_3(
-       KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
-       LGUI_T(KC_A), LALT_T(KC_S), LCTL_T(KC_D), LSFT_T(KC_F), KC_G, KC_H, LSFT_T(KC_J), LCTL_T(KC_K), LALT_T(KC_L), LGUI_T(KC_QUOT),
-       PT_Z,    RALT_T(KC_X),    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  RALT_T(KC_DOT), PT_SLSH,
-                      ESC_MED, TAB_FUN, SPC_NAV, ENT_SYM, BSP_NUM, KC_MUTE
+       FR_QUOT/*'*/,    FR_COMM,/*,*/   FR_DOT/*.*/,    FR_P,           FR_Y,       /**/    FR_F,       FR_G,           FR_C,           FR_R,           FR_L,
+       LGUI_T(FR_A),    LALT_T(FR_O),   LCTL_T(FR_E),   LSFT_T(FR_U),   FR_I,       /**/    FR_D,       LSFT_T(FR_H),   LCTL_T(FR_T),   LALT_T(FR_N),   LGUI_T(FR_S),
+       FR_SCLN/*;*/,    RALT_T(FR_Q),   FR_J,           FR_K,           FR_X,       /**/    FR_B,       FR_M,           FR_W,           RALT_T(FR_V),   FR_Z,
+                                        ESC_MED,        TAB_FUN,        SPC_NAV,    /**/    ENT_SYM,    BSP_NUM,        KC_MUTE
   ),
 
 /*
@@ -125,10 +126,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `KC_DOT` is duplicated from the base layer.
  */
   [LAYER_NUMERAL] = LAYOUT_split_3x5_3(
-    KC_LBRC,    KC_7,    KC_8,    KC_9, KC_RBRC, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    KC_SCLN,    KC_4,    KC_5,    KC_6,  KC_EQL, XXXXXXX, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI,
-     KC_DOT,    KC_1,    KC_2,    KC_3, KC_BSLS, XXXXXXX, XXXXXXX, XXXXXXX, KC_RALT, XXXXXXX,
-                       KC_DOT, KC_MINS,    KC_0, XXXXXXX, _______, XXXXXXX
+    KC_LBRC,    FR_7,    FR_8,    FR_9, KC_RBRC, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    KC_SCLN,    FR_4,    FR_5,    FR_6,  KC_EQL, XXXXXXX, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI,
+     KC_DOT,    FR_1,    FR_2,    FR_3, KC_BSLS, XXXXXXX, XXXXXXX, XXXXXXX, KC_RALT, XXXXXXX,
+                       KC_DOT, KC_MINS,    FR_0, XXXXXXX, _______, XXXXXXX
   ),
 
 /**
@@ -137,6 +138,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Secondary left-hand layer has shifted symbols in the same locations to reduce
  * chording when using mods with shifted symbols. `KC_LPRN` is duplicated next to
  * `KC_RPRN`.
+
+
+
  */
   [LAYER_SYMBOLS] = LAYOUT_split_3x5_3(
     KC_LCBR, KC_AMPR, KC_ASTR, KC_LPRN, KC_RCBR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -156,16 +160,16 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #    endif // DILEMMA_AUTO_SNIPING_ON_LAYER
 #endif     // POINTING_DEVICE_ENABLE
 
-#ifdef ENCODER_MAP_ENABLE
-// clang-format off
-const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [LAYER_BASE]       = {ENCODER_CCW_CW(KC_WH_D, KC_WH_U),  ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [LAYER_FUNCTION]   = {ENCODER_CCW_CW(KC_DOWN, KC_UP),    ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
-    [LAYER_NAVIGATION] = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP),  ENCODER_CCW_CW(KC_VOLU, KC_VOLD)},
-    [LAYER_MEDIA] = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP),  ENCODER_CCW_CW(KC_VOLU, KC_VOLD)},
-    [LAYER_POINTER]    = {ENCODER_CCW_CW(RGB_HUD, RGB_HUI),  ENCODER_CCW_CW(RGB_SAD, RGB_SAI)},
-    [LAYER_NUMERAL]    = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI),  ENCODER_CCW_CW(RGB_SPD, RGB_SPI)},
-    [LAYER_SYMBOLS]    = {ENCODER_CCW_CW(RGB_RMOD, RGB_MOD), ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
-};
-// clang-format on
-#endif // ENCODER_MAP_ENABLE
+//#ifdef ENCODER_MAP_ENABLE
+//// clang-format off
+//const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
+//    [LAYER_BASE]       = {ENCODER_CCW_CW(KC_WH_D, KC_WH_U),  ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+//    [LAYER_FUNCTION]   = {ENCODER_CCW_CW(KC_DOWN, KC_UP),    ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
+//    [LAYER_NAVIGATION] = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP),  ENCODER_CCW_CW(KC_VOLU, KC_VOLD)},
+//    [LAYER_MEDIA] = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP),  ENCODER_CCW_CW(KC_VOLU, KC_VOLD)},
+//    [LAYER_POINTER]    = {ENCODER_CCW_CW(RGB_HUD, RGB_HUI),  ENCODER_CCW_CW(RGB_SAD, RGB_SAI)},
+//    [LAYER_NUMERAL]    = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI),  ENCODER_CCW_CW(RGB_SPD, RGB_SPI)},
+//    [LAYER_SYMBOLS]    = {ENCODER_CCW_CW(RGB_RMOD, RGB_MOD), ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
+//};
+//// clang-format on
+//#endif // ENCODER_MAP_ENABLE
