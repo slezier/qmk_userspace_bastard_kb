@@ -37,8 +37,14 @@ enum dilemma_keymap_layers {
 #define TAB_FUN LT(LAYER_FUNCTION, KC_TAB)
 #define ENT_SYM LT(LAYER_SYMBOLS, KC_ENT)
 #define BSP_NUM LT(LAYER_NUMERAL, KC_BSPC)
-#define PT_Z LT(LAYER_POINTER, KC_Z)
-#define PT_SLSH LT(LAYER_POINTER, KC_SLSH)
+
+
+#define PT_Z LT(LAYER_POINTER, FR_Z)
+#define PT_SCLN LT(LAYER_POINTER, FR_KC_SCLN)
+
+//ko_make_with_layers(modifiers, key, replacement, layers)
+const l1_quote_or_double_quote_fr = ko_make_with_layers(MOD_MASK_SHIFT, FR_QUOT, FR_DQUO, LAYER_BASE);
+
 
 #ifndef POINTING_DEVICE_ENABLE
 #    define DRGSCRL KC_NO
@@ -51,10 +57,10 @@ enum dilemma_keymap_layers {
 /** \brief QWERTY layout (3 rows, 10 columns). */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT_split_3x5_3(
-       FR_QUOT/*'*/,    FR_COMM,/*,*/   FR_DOT/*.*/,    FR_P,           FR_Y,       /**/    FR_F,       FR_G,           FR_C,           FR_R,           FR_L,
-       LGUI_T(FR_A),    LALT_T(FR_O),   LCTL_T(FR_E),   LSFT_T(FR_U),   FR_I,       /**/    FR_D,       LSFT_T(FR_H),   LCTL_T(FR_T),   LALT_T(FR_N),   LGUI_T(FR_S),
-       FR_SCLN/*;*/,    RALT_T(FR_Q),   FR_J,           FR_K,           FR_X,       /**/    FR_B,       FR_M,           FR_W,           RALT_T(FR_V),   FR_Z,
-                                        ESC_MED,        TAB_FUN,        SPC_NAV,    /**/    ENT_SYM,    BSP_NUM,        KC_MUTE
+       QUOT_DQUO/*' "*/,    FR_COMM,/*, ;*/   FR_DOT/*. :*/,    FR_P,           FR_Y,       /**/    FR_F,       FR_G,           FR_C,           FR_R,           FR_L,
+       LGUI_T(FR_A),      LALT_T(FR_O),     LCTL_T(FR_E),     LSFT_T(FR_U),   FR_I,       /**/    FR_D,       LSFT_T(FR_H),   LCTL_T(FR_T),   LALT_T(FR_N),   LGUI_T(FR_S),
+       PT_SCLN/*;*/,      RALT_T(FR_Q),     FR_J,             FR_K,           FR_X,       /**/    FR_B,       FR_M,           FR_W,           RALT_T(FR_V),   PT_Z,
+                                            ESC_MED,          TAB_FUN,        SPC_NAV,    /**/    ENT_SYM,    BSP_NUM,        KC_MUTE
   ),
 
 /*
@@ -160,16 +166,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #    endif // DILEMMA_AUTO_SNIPING_ON_LAYER
 #endif     // POINTING_DEVICE_ENABLE
 
-//#ifdef ENCODER_MAP_ENABLE
-//// clang-format off
-//const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-//    [LAYER_BASE]       = {ENCODER_CCW_CW(KC_WH_D, KC_WH_U),  ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-//    [LAYER_FUNCTION]   = {ENCODER_CCW_CW(KC_DOWN, KC_UP),    ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
-//    [LAYER_NAVIGATION] = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP),  ENCODER_CCW_CW(KC_VOLU, KC_VOLD)},
-//    [LAYER_MEDIA] = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP),  ENCODER_CCW_CW(KC_VOLU, KC_VOLD)},
-//    [LAYER_POINTER]    = {ENCODER_CCW_CW(RGB_HUD, RGB_HUI),  ENCODER_CCW_CW(RGB_SAD, RGB_SAI)},
-//    [LAYER_NUMERAL]    = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI),  ENCODER_CCW_CW(RGB_SPD, RGB_SPI)},
-//    [LAYER_SYMBOLS]    = {ENCODER_CCW_CW(RGB_RMOD, RGB_MOD), ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
-//};
-//// clang-format on
-//#endif // ENCODER_MAP_ENABLE
+
+// This globally defines all key overrides to be used
+const key_override_t *key_overrides[] = {
+	&l1_quote_or_double_quote_fr
+};
